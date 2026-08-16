@@ -1,6 +1,7 @@
 import csv
 import re
 import unicodedata
+from datetime import datetime
 
 #--------------------------------------------------------------------------
 #    AREA DA FUNÇÃO DE LEITURA DE ARQUIVO CSV
@@ -8,18 +9,16 @@ import unicodedata
 def carregar_csv(caminho):
     """Carrega um arquivo CSV utilizando csv.DictReader e retorna uma lista de dicionários."""
     
-    produtos = []
+    registros= []
     
     with open(caminho, mode='r',encoding="utf-8",newline="") as arquivo:
         leitor = csv.DictReader(arquivo)
         
         for linha in leitor:
-            produtos.append(linha)
+            registros.append(linha)
             
-    return produtos
+    return registros
     
-
-
 #--------------------------------------------------------------------------
 #   AREA DA FUNÇÃO DE LIMPEZA DE CATEGORIA
 #--------------------------------------------------------------------------
@@ -143,7 +142,7 @@ def contar_nulos_dimensoes(produtos):
 #   AREA DA FUNÇÃO DE CÁLCULO DE MÉDIAS DAS DIMENSÕES
 #--------------------------------------------------------------------------
 def calcular_medias_dimensoes(produtos):
-    """Lê um arquivo CSV e calcula a média das dimensões dos produtos."""
+    """Calcula a média das dimensões dos produtos utilizando os valores preenchidos."""
     
     soma = {
         "peso": 0.0,
@@ -203,3 +202,92 @@ def tratar_dataset_produtos(produtos,medias):
     
     return produtos_tratados
 
+#--------------------------------------------------------------------------
+#   AREA DA FUNÇÃO DE ANÁLISE DE PEDIDOS
+#--------------------------------------------------------------------------
+
+def analisar_datas_entregas(pedidos):
+    """
+    Analisa os pedidos sem data de entrega e contabiliza
+    quantos possuem status canceled e quantos possuem
+    outros status.
+
+    Retorna um dicionário com os resultados da análise.
+    """
+    sem_data_entrega = 0
+    sem_data_cancelados = 0
+    sem_data_outros_status = 0
+    
+    for pedido in pedidos:
+        data_entrega = pedido["order_delivered_customer_date"]
+        status = pedido["order_status"]
+        if data_entrega.strip() == "":
+            sem_data_entrega +=1
+            if status == "canceled":
+                sem_data_cancelados += 1
+            else:
+                sem_data_outros_status += 1
+    resultados ={
+        "sem_data_entrega": sem_data_entrega,
+        "sem_data_cancelados": sem_data_cancelados,
+        "sem_data_outros_status": sem_data_outros_status
+    }
+    
+    return resultados
+    
+  #A hipótese de que todos os pedidos sem data de entrega estão cancelados foi rejeitada. 
+  # Foram identificados 2.965 pedidos sem order_delivered_customer_date, 
+  # dos quais 619 estavam com status canceled e 2.346 apresentavam outros status.
+  
+ #--------------------------------------------------------------------------
+#   AREA DA FUNÇÃO DE CONVERSÃO DAS DATAS COM datetime
+#--------------------------------------------------------------------------
+
+def formatar_data_aprovacao(data_aprovacao):
+    """
+    Função com o objetivo de formatar a data de aprovação do pedido.
+    Recebe uma string no formato "YYYY-MM-DD HH:MM:SS" e retorna uma string no formato "DD/MM/YYYY".
+    Caso a data de aprovação seja uma string vazia, retorna uma string vazia.
+    """
+    
+    
+    if data_aprovacao.strip() =="":
+        return ""
+    
+    data = datetime.strptime(data_aprovacao,"%Y-%m-%d %H:%M:%S")
+    
+    data_formatada = data.strftime("%d/%m/%Y")
+    
+    return data_formatada
+    
+def tratar_datas_pedidos(pedidos):
+    """
+    Função que percorre a lista de pedidos e formata a data de aprovação de cada pedido.
+    Retorna uma nova lista de pedidos com as datas formatadas.
+    """
+    
+    pedidos_tratados = []
+    
+    for pedido in pedidos:
+        pedido_copia = pedido.copy()  # Cria uma cópia do pedido para evitar alterações no original
+        pedido_copia ["order_approved_at"] = formatar_data_aprovacao(pedido_copia["order_approved_at"])
+        pedidos_tratados.append(pedido_copia)
+    
+    return pedidos_tratados
+
+#--------------------------------------------------------------------------
+#   AREA DA FUNÇÃO DE CONTADOR DE PEDIDOS CANCELADOS NA BASE INTEIRA
+#--------------------------------------------------------------------------
+def contar_pedidos_cancelados(pedidos):
+    """
+    Função que percorre a lista de pedidos e conta quantos pedidos possuem o status "canceled".
+    Retorna o total de pedidos cancelados.
+    """
+    
+    total_cancelados = 0
+    
+    for pedido in pedidos:
+        if pedido["order_status"] == "canceled":
+            total_cancelados += 1
+            
+    return total_cancelados
