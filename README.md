@@ -128,35 +128,14 @@ estavam cancelados.
     Total de valores ausentes tratados: 618
     Pedidos cancelados identificados: 625
 
-## Reflexão Teórica sobre a Análise e Tratamento dos Dados
+## Reflexão Teórica
 
-A análise dos dados demonstrou a importância da etapa de diagnóstico
-antes da aplicação de qualquer processo de tratamento. A identificação
-de valores ausentes, inconsistências cadastrais e informações
-incompletas permitiu compreender a qualidade inicial da base e
-direcionar as estratégias de correção. Esse processo evidencia que a
-preparação dos dados é uma etapa fundamental em projetos de análise,
-pois dados inconsistentes podem comprometer interpretações, indicadores
-e decisões posteriores.
+A aplicação de uma lógica de programação estruturada na etapa de limpeza dos dados é fundamental para garantir que futuras análises e modelos de Inteligência Artificial sejam desenvolvidos sobre informações confiáveis. Dados incompletos, inconsistentes ou com padrões incorretos podem introduzir vieses no processo de aprendizado, fazendo com que os modelos reproduzam distorções existentes na base de treinamento. A identificação de valores ausentes, inconsistências dos dados e informações incompletas permitem compreender a qualidade inicial da base e direcionar as estratégias de correção. Esse processo evidencia que apreparação dos dados é uma etapa fundamental em projetos de análise, pois dados inconsistentes podem comprometer interpretações, indicadores e decisões posteriores.
 
-O tratamento realizado buscou preservar a integridade das informações
-originais, criando uma nova versão dos dados processados sem modificar a
-base bruta. A substituição das categorias ausentes por uma classificação
-padronizada e a imputação das dimensões físicas utilizando valores
-médios dos registros válidos representam técnicas de limpeza e
-padronização utilizadas em processos reais de preparação de dados. A
-utilização da média como estratégia de correção foi aplicada devido à
-pequena quantidade de valores ausentes identificados, evitando a perda
-de registros e mantendo a consistência do conjunto analisado.
+No projeto desenvolvido, a identificação e tratamento de categorias vazias, valores dimensionais ausentes e padronização das informações representam etapas importantes para reduzir ruídos e melhorar a qualidade dos dados utilizados.
 
-A análise dos pedidos permitiu avaliar uma hipótese de negócio
-relacionada aos pedidos sem data de entrega. Os resultados demonstraram
-que a ausência dessa informação não representava necessariamente um
-cancelamento, evidenciando a importância de validar suposições
-utilizando os próprios dados. Dessa forma, o projeto reforça a
-necessidade de combinar técnicas de tratamento, análise exploratória e
-interpretação dos resultados para transformar dados brutos em
-informações confiáveis para apoio à tomada de decisão.
+Além disso, uma preparação inadequada dos dados pode contribuir para problemas como overfitting, pois o modelo pode aprender características específicas ou inconsistências presentes na base ao invés de identificar padrões reais do comportamento dos dados. A limpeza, normalização e validação das informações permitem construir conjuntos de dados mais representativos, aumentando a capacidade de generalização dos modelos e reduzindo a influência de informações incorretas ou tendenciosas nas previsões futuras.
+
 
 ## Como Executar
 
