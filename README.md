@@ -163,7 +163,7 @@ informações confiáveis para apoio à tomada de decisão.
 Clone o repositório:
 
 ``` bash
-git clone <URL_DO_REPOSITORIO>
+git clone https://github.com/FCASSINI/Mini_Projeto_Machine_Learning_T3.git
 ```
 
 Execute:
