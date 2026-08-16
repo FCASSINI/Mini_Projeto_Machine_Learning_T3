@@ -67,6 +67,10 @@ def tratar_dimensoes(linha, medias):
         linha["product_width_cm"] = float(linha["product_width_cm"])
     
     return linha
+
+#Foram encontrados apenas dois valores ausentes em cada dimensão física. 
+# Optou-se pela imputação utilizando a média dos valores válidos para preservar os registros 
+# e evitar a atribuição arbitrária de zero.
     
 #--------------------------------------------------------------------------
 #   AREA DA FUNÇÃO DE PROCESSAMENTO DE PRODUTO
@@ -92,6 +96,8 @@ def processar_produto(linha, medias):
     linha = tratar_dimensoes(linha, medias)
 
     return linha
+
+
 
 #--------------------------------------------------------------------------
 #   AREA DA FUNÇÃO DE CONTAGEM DE CATEGORIAS VAZIAS
@@ -189,8 +195,10 @@ def tratar_dataset_produtos(produtos,medias):
     
     produtos_tratados = []
     
+    
     for linha in produtos:
-        produto_tratado = processar_produto(linha,medias)
+        linha_copia = linha.copy()  # Cria uma cópia da linha para evitar alterações no original
+        produto_tratado = processar_produto(linha_copia,medias)
         produtos_tratados.append(produto_tratado)
     
     return produtos_tratados
